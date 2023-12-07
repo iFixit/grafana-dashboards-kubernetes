@@ -503,7 +503,7 @@
           "refId": "A"
         }
       ],
-      "title": "Number of new user signups per 5mins",
+      "title": "Number of new user signups per 5 minutes",
       "type": "timeseries"
     },
     {
