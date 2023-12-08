@@ -7,10 +7,16 @@
           "type": "grafana",
           "uid": "-- Grafana --"
         },
-        "enable": true,
+        "enable": false,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
@@ -273,15 +279,36 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "verdaccio"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -334,10 +361,10 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "bars",
-            "fillOpacity": 100,
-            "gradientMode": "hue",
+            "barAlignment": -1,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -360,7 +387,6 @@
               "mode": "off"
             }
           },
-          "decimals": 1,
           "mappings": [],
           "min": 0,
           "thresholds": {
@@ -369,10 +395,6 @@
               {
                 "color": "green",
                 "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
               }
             ]
           },
@@ -406,7 +428,7 @@
             "uid": "e7782091-16d1-41dd-b678-c26f83ba32ed"
           },
           "editorMode": "code",
-          "expr": "count_over_time({job=\"verdaccio/verdaccio\"} |~ \"error\" [1m])\n",
+          "expr": "sum(count_over_time({job=\"verdaccio/verdaccio\"} |~ \"error\" [1m])) or vector(0)",
           "queryType": "range",
           "refId": "A"
         }
@@ -430,9 +452,9 @@
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
-            "drawStyle": "bars",
+            "drawStyle": "line",
             "fillOpacity": 100,
-            "gradientMode": "hue",
+            "gradientMode": "none",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -470,7 +492,20 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "A"
+            },
+            "properties": [
+              {
+                "id": "custom.axisLabel",
+                "value": "Users"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -498,12 +533,12 @@
             "uid": "e7782091-16d1-41dd-b678-c26f83ba32ed"
           },
           "editorMode": "code",
-          "expr": "count_over_time({job=\"verdaccio/verdaccio\"} |= \"the user\" |= \"has been added\" | line_format \"{{table}}\" [5m])",
+          "expr": "sum(count_over_time({job=\"verdaccio/verdaccio\"} |= \"the user\" |= \"has been added\" [5m])) or vector(0)\n",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Number of new user signups per 5 minutes",
+      "title": "New Verdaccio Users",
       "type": "timeseries"
     },
     {
@@ -594,7 +629,7 @@
       "type": "logs"
     }
   ],
-  "refresh": "",
+  "refresh": false,
   "schemaVersion": 38,
   "style": "dark",
   "tags": [],
@@ -697,13 +732,13 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Verdaccio dashboard",
   "uid": "e4604cdc-2bd7-483a-a7d5-aa3982593af2",
-  "version": 17,
+  "version": 26,
   "weekStart": ""
 }
