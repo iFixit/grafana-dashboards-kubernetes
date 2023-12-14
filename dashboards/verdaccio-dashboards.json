@@ -620,7 +620,7 @@
             "uid": "e7782091-16d1-41dd-b678-c26f83ba32ed"
           },
           "editorMode": "code",
-          "expr": "{job=\"verdaccio/verdaccio\"} |~ \"error\" ",
+          "expr": "{job=\"verdaccio/verdaccio\"} |~ \"(error: |error--- |http <-- 40|http <-- 50|info <-- 40|info <-- 50)\"",
           "queryType": "range",
           "refId": "A"
         }
@@ -629,7 +629,7 @@
       "type": "logs"
     }
   ],
-  "refresh": false,
+  "refresh": "",
   "schemaVersion": 38,
   "style": "dark",
   "tags": [],
@@ -739,6 +739,6 @@
   "timezone": "",
   "title": "Verdaccio dashboard",
   "uid": "e4604cdc-2bd7-483a-a7d5-aa3982593af2",
-  "version": 26,
+  "version": 63,
   "weekStart": ""
 }
