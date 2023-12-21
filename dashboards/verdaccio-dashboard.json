@@ -543,6 +543,157 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "a2734063-128b-4ed9-ae57-5ee29250e664"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "linear",
+            "barAlignment": 0,
+            "lineWidth": 1,
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "spanNulls": false,
+            "insertNulls": false,
+            "showPoints": "auto",
+            "pointSize": 5,
+            "stacking": {
+              "mode": "none",
+              "group": "A"
+            },
+            "axisPlacement": "auto",
+            "axisLabel": "",
+            "axisColorMode": "text",
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "axisCenteredZero": false,
+            "hideFrom": {
+              "tooltip": false,
+              "viz": false,
+              "legend": false
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "color": {
+            "mode": "palette-classic"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 17
+      },
+      "id": 11,
+      "options": {
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        },
+        "legend": {
+          "showLegend": true,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "a2734063-128b-4ed9-ae57-5ee29250e664"
+          },
+          "editorMode": "builder",
+          "exemplar": false,
+          "expr": "sum by (interface) (rate(container_network_transmit_bytes_total{namespace=\"verdaccio\"}[1m]))",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "Transmitted Bytes"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "a2734063-128b-4ed9-ae57-5ee29250e664"
+          },
+          "editorMode": "code",
+          "expr": "sum by (interface) (rate(container_network_receive_bytes_total{namespace=\"verdaccio\"}[1m]))",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "Received Bytes"
+        }
+      ],
+      "title": "Network Utilization",
+      "transformations": [
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "Transmitted Bytes"
+          },
+          "id": "renameByRegex",
+          "options": {
+            "regex": "eth0",
+            "renamePattern": "Transmitted Bytes"
+          }
+        },
+        {
+          "filter": {
+            "id": "byRefId",
+            "options": "Received Bytes"
+          },
+          "id": "renameByRegex",
+          "options": {
+            "regex": "eth0",
+            "renamePattern": "Received Bytes"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Total Network Utilization",
+            "mode": "reduceRow",
+            "reduce": {
+              "include": [
+                "Transmitted Bytes",
+                "Received Bytes"
+              ],
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        }
+      ],
+      "type": "timeseries"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
